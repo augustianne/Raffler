@@ -1,10 +1,12 @@
 package raffler;
 
-import raffler.RaffleKeyEvent;
+//import raffler.RaffleKeyEvent;
+import raffler.RaffleKeyPressEvent;
 
 import javafx.scene.paint.Color;
 import java.io.*;
 
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -27,6 +29,7 @@ public class RafflerWindow
 	Text winner = new Text("RAFFLER!");
 	File selectedFile;
 	Stage mainStage;
+	Timeline timeline;
 	
 	public RafflerWindow(Stage stage) 
 	{
@@ -50,7 +53,8 @@ public class RafflerWindow
 				 
 		Scene scene = new Scene(vbox, 300, 250);
 		scene.setFill(Color.web("177e89"));
-		scene.setOnKeyPressed(new RaffleKeyEvent(selectedFile, rafflerList, winner, rafflerListCopy));
+		scene.setOnKeyPressed(new RaffleKeyPressEvent(selectedFile, rafflerList, winner, rafflerListCopy));
+		
 
 		mainStage.setTitle("Raffler");
 		mainStage.setScene(scene);

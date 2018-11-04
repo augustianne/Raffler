@@ -5,14 +5,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.media.AudioClip;
+//import javafx.animation.Animation;
+//import javafx.animation.KeyFrame;
+//import javafx.animation.Timeline;
+//import javafx.beans.property.IntegerProperty;
+//import javafx.beans.property.SimpleIntegerProperty;
+//import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
+//import javafx.util.Duration;
 
 public class RaffleLogic 
 {
@@ -30,7 +30,7 @@ public class RaffleLogic
 		rafflerListCopy = listCopy;
 	}
 	
-	public String getRandomFromList(ArrayList<String> raffleContainer, boolean removePicked)
+	public static String getRandomFromList(ArrayList<String> raffleContainer, boolean removePicked)
 	{
 		Random rand = new Random();
 		int randomIndex = rand.nextInt(raffleContainer.size());
@@ -46,9 +46,11 @@ public class RaffleLogic
 	public String raffle()
 	{
 		if (!rafflerList.isEmpty()) {
-    		String winner = this.getRandomFromList(rafflerList, true);
+    		String winner = RaffleLogic.getRandomFromList(rafflerList, true);
+    		if (winner.length() > 16) {
+    			winnerText.setStyle("-fx-font-size: 70;");
+    		}
 			winnerText.setText(winner);
-//			System.out.println(rafflerList);
 			
 			try {
 				this.writeBackToFile();
@@ -58,39 +60,6 @@ public class RaffleLogic
 		}
 		
 		return null;
-	}
-	
-	public void animate() 
-	{
-		if (!rafflerList.isEmpty()) {
-			Timeline timeline = new Timeline();
-			final IntegerProperty i = new SimpleIntegerProperty(0);
-//			final int raffleSize = rafflerListCopy.size() * 50;
-			final int raffleSize = 450;
-			
-			AudioClip beep = new AudioClip(new File("resources/spin1.mp3").toURI().toString());
-			beep.play();
-			
-			KeyFrame keyFrame = new KeyFrame(
-				Duration.millis(10),
-				event -> {
-					
-					if (i.get() >= raffleSize) {
-						beep.stop();
-						timeline.stop();
-						this.raffle();
-					} else {
-						winnerText.setText(this.getRandomFromList(rafflerListCopy, false));
-						i.set(i.get() + 1);
-					}
-            	
-				}
-			);
-			
-			timeline.getKeyFrames().add(keyFrame);
-			timeline.setCycleCount(Animation.INDEFINITE);
-			timeline.play();
-		}
 	}
 	
 	private void writeBackToFile() throws IOException
