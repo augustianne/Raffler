@@ -12,6 +12,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class RaffleAnimation 
@@ -21,18 +22,22 @@ public class RaffleAnimation
 	Text winnerText;
 	Timeline animation;
 	AudioClip beep;
+	Stage mainStage;
 	
-	public RaffleAnimation(Text text, ArrayList<String> list, ArrayList<String> listCopy) 
+	public RaffleAnimation(Text text, ArrayList<String> list, ArrayList<String> listCopy, Stage stage) 
 	{
 		winnerText = text;
 		rafflerListCopy = listCopy;
 		rafflerList = list;
+		mainStage = stage;
 	}
 	
 	public void animate() 
 	{
+		Long fontSize = Math.round(0.085 * mainStage.getWidth());
+		
 		if (!rafflerList.isEmpty()) {
-			winnerText.setStyle("-fx-font-size: 120;");
+			winnerText.setStyle("-fx-font-size: "+fontSize+"px;");
 			animation = new Timeline();
 			final IntegerProperty i = new SimpleIntegerProperty(0);
 //			final int raffleSize = rafflerListCopy.size() * 50;
@@ -53,15 +58,18 @@ public class RaffleAnimation
 			animation.play();
 		}
 		else {
-			winnerText.setStyle("-fx-font-size: 70;");
+			fontSize = fontSize / 2;
+			winnerText.setStyle("-fx-font-size: "+fontSize+"px;");
 			winnerText.setText("Congratulations to all the winners!");
 		}
 	}
 	
 	public void stop()
 	{
-		animation.stop();
-		beep.stop();
+		if (animation != null) {
+			animation.stop();
+			beep.stop();
+		}
 	}
 	
 

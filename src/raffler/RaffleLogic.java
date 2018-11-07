@@ -5,14 +5,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//import javafx.animation.Animation;
-//import javafx.animation.KeyFrame;
-//import javafx.animation.Timeline;
-//import javafx.beans.property.IntegerProperty;
-//import javafx.beans.property.SimpleIntegerProperty;
-//import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
-//import javafx.util.Duration;
+import javafx.stage.Stage;
 
 public class RaffleLogic 
 {
@@ -20,14 +14,15 @@ public class RaffleLogic
 	File selectedFile;
 	ArrayList<String> rafflerListCopy;
 	Text winnerText;
+	Stage mainStage;
 	
-	
-	public RaffleLogic(File file, ArrayList<String> list, Text text, ArrayList<String> listCopy) 
+	public RaffleLogic(File file, ArrayList<String> list, Text text, ArrayList<String> listCopy, Stage stage) 
 	{
 		rafflerList = list;
 		winnerText = text;
 		selectedFile = file;
 		rafflerListCopy = listCopy;
+		mainStage = stage;
 	}
 	
 	public static String getRandomFromList(ArrayList<String> raffleContainer, boolean removePicked)
@@ -46,10 +41,14 @@ public class RaffleLogic
 	public String raffle()
 	{
 		if (!rafflerList.isEmpty()) {
+			Long fontSize = Math.round(0.085 * mainStage.getWidth());
+			
     		String winner = RaffleLogic.getRandomFromList(rafflerList, true);
     		if (winner.length() > 16) {
-    			winnerText.setStyle("-fx-font-size: 70;");
+    			fontSize = fontSize / 2;
     		}
+
+			winnerText.setStyle("-fx-font-size: "+fontSize+"px;");
 			winnerText.setText(winner);
 			
 			try {

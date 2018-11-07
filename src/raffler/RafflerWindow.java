@@ -3,16 +3,18 @@ package raffler;
 //import raffler.RaffleKeyEvent;
 import raffler.RaffleKeyPressEvent;
 
-import javafx.scene.paint.Color;
 import java.io.*;
 
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 
@@ -41,8 +43,11 @@ public class RafflerWindow
 	
 	private void launchWindow()
 	{
+		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+		Long fontSize = Math.round(0.085 * screenBounds.getWidth());
+		
 		winner.setId("winner");
-		winner.setFont(Font.font("Arial Black", FontWeight.BLACK, 120));
+		winner.setFont(Font.font("Arial Black", FontWeight.BLACK, fontSize));
 		winner.setFill(Color.web("ffc857"));
 		
 		VBox vbox = new VBox();
@@ -53,7 +58,7 @@ public class RafflerWindow
 				 
 		Scene scene = new Scene(vbox, 300, 250);
 		scene.setFill(Color.web("177e89"));
-		scene.setOnKeyPressed(new RaffleKeyPressEvent(selectedFile, rafflerList, winner, rafflerListCopy));
+		scene.setOnKeyPressed(new RaffleKeyPressEvent(selectedFile, rafflerList, winner, rafflerListCopy, mainStage));
 		
 
 		mainStage.setTitle("Raffler");
